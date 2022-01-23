@@ -25,12 +25,20 @@ class HomePage extends StatelessWidget {
               );
             }
             if (state is HomeLoadedState) {
-              return Column(
-                children: [
-                  Text(state.activityName),
-                  Text(state.activityType),
-                  Text(state.participants.toString()),
-                ],
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(state.activityName),
+                    Text(state.activityType),
+                    Text(state.participants.toString()),
+                    ElevatedButton(
+                      child: const Text('Load API Next'),
+                      onPressed: () =>
+                          BlocProvider.of<HomeBloc>(context).add(LoadApiEvent()),
+                    ),
+                  ],
+                ),
               );
             }
             return Container();
