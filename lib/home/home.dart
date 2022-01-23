@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc_api/home/bloc/home_bloc.dart';
 import 'package:latihan_bloc_api/services/bored_service.dart';
+import 'package:latihan_bloc_api/services/connectivity_service.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBloc(
         RepositoryProvider.of<BoredService>(context),
+        RepositoryProvider.of<ConnectivityService>(context),
       )..add(LoadApiEvent()),
       child: Scaffold(
         appBar: AppBar(
@@ -34,12 +36,15 @@ class HomePage extends StatelessWidget {
                     Text(state.participants.toString()),
                     ElevatedButton(
                       child: const Text('Load API Next'),
-                      onPressed: () =>
-                          BlocProvider.of<HomeBloc>(context).add(LoadApiEvent()),
+                      onPressed: () => BlocProvider.of<HomeBloc>(context)
+                          .add(LoadApiEvent()),
                     ),
                   ],
                 ),
               );
+            }
+            if (state is HomeNoInternetState) {
+              return const Center(child: Text('not have internet ☹️'));
             }
             return Container();
           },
